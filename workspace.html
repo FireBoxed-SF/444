@@ -1,7 +1,3 @@
-
-exported (2).html
-
-100%
 <!DOCTYPE html>
 <html lang="en" data-theme="oled">
 <head>
@@ -1241,7 +1237,7 @@ exported (2).html
   </main>
 
   <script>
-    fetch('./music.html?v=20261025')
+    fetch('https://cdn.jsdelivr.net/gh/FireBoxed-SF/luna@main/moon.html?v=20261025')
       .then(response => {
         if (!response.ok) throw new Error('Could not load the Music module.');
         return response.text();
@@ -1459,6 +1455,14 @@ exported (2).html
       <div class="setting-group" id="settings-appearance" data-settings-section>
         <div class="setting-group-title">Colors & details</div>
         <p class="setting-group-desc">Bring your favorite palette to life.</p>
+
+        <div class="setting-item">
+          <div>
+            <div class="setting-label">Home greeting name</div>
+            <div class="setting-desc">Personalize the greeting on your Home page</div>
+          </div>
+          <input type="text" id="display-name-input" maxlength="32" placeholder="Your name" aria-label="Name used in the Home greeting" style="width: min(48%, 190px);">
+        </div>
 
         <div class="setting-item">
           <div>
@@ -2071,6 +2075,20 @@ exported (2).html
 
     function switchPage(pageId) {
       document.documentElement.classList.toggle('loom-loon-open', pageId === 'loon');
+      document.documentElement.classList.toggle('loom-luna-open', pageId === 'music');
+      let lunaExit = document.getElementById('luna-home-exit');
+      if (!lunaExit) {
+        lunaExit = document.createElement('button');
+        lunaExit.id = 'luna-home-exit';
+        lunaExit.type = 'button';
+        lunaExit.className = 'luna-home-exit';
+        lunaExit.setAttribute('aria-label', 'Close Luna and return home');
+        lunaExit.title = 'Back to Home';
+        lunaExit.textContent = '×';
+        lunaExit.addEventListener('click', () => switchPage('home'));
+        document.body.appendChild(lunaExit);
+      }
+      lunaExit.hidden = pageId !== 'music';
       document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
       const target = document.getElementById(pageId);
       if (target) target.classList.add('active');
@@ -3513,55 +3531,73 @@ exported (2).html
       openModal('Loom Guide', `
         <div class="info-modal-content">
           <section>
-            <h3>Browse and play</h3>
-            <p>Head to <strong>Games</strong> and pick a stash: GN-Math and Ultimate Game Stash fetch online catalogs; Scratch lists hosted projects; Custom Library is where your own additions live. Tap a card to play.</p>
+            <h3>Games and collections</h3>
+            <p>Head to <strong>Games</strong> and choose GN-Math, Ultimate Game Stash, Scratch, or Custom Library. Each catalog has its own games and can be searched and filtered independently.</p>
             <ul>
-              <li>Search by title, filter by category or platform, and sort by title, recent additions, or GN-Math popularity. Large catalogs load in pages.</li>
-              <li>Create collections, choose one as the add target, then use the plus button on game cards. Select a collection filter to browse its games.</li>
-              <li>Use the heart on a card to save it to <strong>Favorites</strong>. Played titles appear in <strong>Recently Played</strong> on Home.</li>
-              <li>In Custom Library, choose a source type, enter its project ID, URL, or HTML, then select <strong>Save to Library</strong>.</li>
+              <li>Search titles, filter by category or platform, and sort by title, recent additions, or GN-Math popularity.</li>
+              <li>Use the heart button to save favorites. Recently played games appear on Home.</li>
+              <li>Create collections, select a collection as the add target, and use the plus button on game cards to organize your library.</li>
+              <li>In Custom Library, add Scratch projects, Flash games, retro ROMs, raw HTML, or external web games.</li>
+              <li>Launch games in the player, then use Fullscreen, New Tab, or Close to control the experience.</li>
             </ul>
           </section>
           <section>
-            <h3>Explore</h3>
-            <p><strong>Discover</strong> brings you Watchables, Games, and Browser.</p>
+            <h3>Explore Luna, Loon, and Watchables</h3>
+            <ul>
+              <li><strong>Luna</strong> is the music workspace. Browse albums, search for music, build a queue, and control playback. Luna opens focused full-screen and returns Home with the top-right X.</li>
+              <li><strong>Loon</strong> is the AI assistant. Start a new chat, revisit recent conversations, attach an image, or ask a question in the message box. Loon's chat history and profile stay in this browser.</li>
+              <li><strong>Discover</strong> includes Watchables, the SLEEK document, Games, and Browser. Embedded pages can also be reloaded, opened fullscreen, or launched in a new tab.</li>
+            </ul>
           </section>
           <section>
-            <h3>Make it yours</h3>
-            <p>Open the gear menu for themes, accessibility options, wallpaper, and backup. The <strong>Visual Presets</strong> give you quick ways to make reading easier. Your favorites, collections, custom games, and preferences are stored in this browser.</p>
-            <p>Use <strong>Export Full Site Backup JSON</strong> to keep a copy before moving to another browser or device. Install Loom from the Home page to have its shell ready offline — online catalogs and external games still need a connection.</p>
+            <h3>Customize Loom</h3>
+            <p>Open the gear menu to change themes, accent colors, fonts, corner styles, clock format, card density, catalog sorting, wallpapers, and UI scale.</p>
+            <ul>
+              <li>Visual presets provide quick Minimal, Classic, Comfort, or Bold setups.</li>
+              <li>Accessibility tools include text contrast, bold text, spacing, relaxed line height, dyslexia-friendly type, reduced motion, and stronger focus rings.</li>
+              <li>UI sounds and privacy quick-exit options can be adjusted in Settings.</li>
+              <li>Your favorites, collections, custom games, preferences, and chat history are stored locally in this browser.</li>
+            </ul>
           </section>
           <section>
-            <h3>Player controls</h3>
-            <p>Use <strong>Fullscreen</strong> to expand, <strong>New Tab</strong> to open separately, or <strong>Close</strong> to return to Loom. Some external sites may block embedding — the new-tab option works around that.</p>
+            <h3>Backup and offline use</h3>
+            <p>Use <strong>Export Full Site Backup JSON</strong> in Settings to save favorites, collections, custom games, and preferences. Import it later to restore your setup.</p>
+            <p>Install Loom from Home when available for an app-like experience. The app shell can be ready offline, while online catalogs, hosted games, Luna, Loon, and external embeds still require internet access.</p>
           </section>
         </div>`);
     });
 
     document.getElementById('open-changelog-btn').addEventListener('click', () => {
-      openModal('Beta Changelog', `
+      openModal('What’s New & Version History', `
         <div class="info-modal-content">
           <section>
-            <h3>Loom Beta 1.0 · Launch</h3>
-            <p>Loom is now available as a beta. Core features are ready to try, but catalogs and embedded services rely on third parties and may occasionally change or be unavailable.</p>
+            <h3>Loom 2.0 · The Expanded Era</h3>
+            <p>Loom is more than a game library now. The 2.0 release turns it into a complete personal workspace with Luna music, Loon AI, a refined interface, and deeper customization.</p>
             <ul>
-              <li>Browse GN-Math, Ultimate Game Stash, Scratch, and custom game libraries.</li>
-              <li>Filter games by category and platform, sort by popularity, and create personal collections.</li>
-              <li>Install Loom as a PWA and reopen its app shell offline; connected game content still requires internet.</li>
-              <li>Use favorites, recently played games, and full JSON backup/restore including collections.</li>
-              <li>Open Watchables and Browser.</li>
-              <li>Customize the interface with themes, visual presets, accessibility options, and wallpaper; export or restore a site backup.</li>
-            <li>Game catalogs now load more reliably, with a live count and retry feedback.</li>
+              <li><strong>Luna music:</strong> Browse, search, queue, and play music in a focused full-screen experience.</li>
+              <li><strong>Loon AI:</strong> Chat with an integrated assistant, attach images, and keep local conversation history.</li>
+              <li><strong>Refined UI:</strong> Redesigned navigation, polished panels, stronger visual presets, and responsive layouts for desktop and mobile.</li>
+              <li><strong>More discovery:</strong> Expanded Watchables, Browser, suggestions, sharing, and game browsing tools.</li>
+              <li><strong>Accessibility:</strong> Readability controls, dyslexia-friendly text, reduced motion, focus rings, custom scale, and flexible themes.</li>
+              <li><strong>Personalization:</strong> Wallpapers, accent colors, favorites, collections, recent activity, and full backup/restore.</li>
             </ul>
           </section>
           <section>
-            <h3>Development history</h3>
+            <h3>Loom 1.0 · The Basic Era</h3>
+            <p>The original foundation established Loom as a simple place to discover and play games.</p>
             <ul>
-              <li><strong>v2.9:</strong> Added a newest GN-Math games section and highlighted GN-Math in the stash selector.</li>
-              <li><strong>v2.8:</strong> Added Random Game, game suggestions, favorites sharing, and additional themes.</li>
-              <li><strong>v2.7:</strong> Added Readability & Visuals presets.</li>
-              <li><strong>v2.6:</strong> Added the Discover menu and Watchables.</li>
-              <li><strong>v2.5:</strong> Added Recently Played, Flash and retro players, wallpaper, and backup/restore.</li>
+              <li>Core games library with GN-Math, Ultimate Game Stash, Scratch, and custom games.</li>
+              <li>Games, Browser, and embedded document experiences.</li>
+              <li>Game filters, sorting, favorites, and personal collections.</li>
+              <li>Early themes, wallpapers, recently played games, and backup/restore tools.</li>
+              <li>Installable PWA shell with third-party content that requires an internet connection.</li>
+            </ul>
+          </section>
+          <section>
+            <h3>Development milestones</h3>
+            <ul>
+              <li><strong>2.0 · Luna & Loon:</strong> Added the Luna music experience, Loon AI assistant, and focused full-screen workspace modes.</li>
+              <li><strong>1.0 · Basic Era:</strong> Established the core game catalog, browser, documents, and first customization features.</li>
             </ul>
           </section>
         </div>`);
@@ -3572,7 +3608,7 @@ exported (2).html
         <div class="info-modal-content">
           <section>
             <h3>Project</h3>
-            <p><strong>Loom</strong> is built with care by <strong>the Loom team</strong>.</p>
+            <p><strong>Loom</strong> is built by <strong>Boxed</strong> and <strong>FRAZ</strong>, and <strong>owned</strong> by <strong>SkyFlare Studios</strong>.</p>
           </section>
           <section>
             <h3>Libraries and player technology</h3>
@@ -3772,7 +3808,7 @@ exported (2).html
       });
 
       window.addEventListener('offline', () => {
-        showPwaStatus('You are offline. Taro is available, but game catalogs and external games may need internet.');
+        showPwaStatus('You are offline. Loom is available, but game catalogs and external games may need internet.');
       });
       window.addEventListener('online', () => showPwaStatus('Back online.'));
       if (!navigator.onLine) {
@@ -3785,7 +3821,6 @@ exported (2).html
       }
       navigator.serviceWorker.register('./sw.js').catch(error => {
         console.error('Taro service worker registration failed:', error);
-        showPwaStatus('Offline support could not be enabled. Serve Loom over HTTPS or localhost.');
       });
     })();
   </script>
@@ -4257,7 +4292,7 @@ exported (2).html
     // and our [data-theme=...] CSS above does the rest.
   })();
 
-  toast('Loom v2.8 module loaded — Random, Suggestions, favorites sharing & new themes ready!');
+  toast('Loom v2.0 module loaded — WELCOME BACK! USER');
 </script>
 <!-- ================== END v2.8 ADD-ON ================== -->
 <style>
@@ -5206,12 +5241,20 @@ exported (2).html
   }
 
   .first-run-panel h2 { margin-bottom: 0.35rem; font-size: 1.35rem; font-weight: 600; }
+  .first-run-progress { display: grid; gap: 0.45rem; margin-bottom: 1.4rem; color: var(--muted-text); font-size: 0.68rem; }
+  .first-run-progress-track { height: 4px; overflow: hidden; border-radius: 99px; background: var(--appearance-border, var(--border-color)); }
+  #first-run-progress-fill { display: block; width: 33.333%; height: 100%; background: var(--accent-color); transition: width 180ms ease; }
+  .first-run-step[hidden] { display: none; }
+  .first-run-actions [hidden] { display: none !important; }
   .first-run-intro { margin-bottom: 1.4rem; color: var(--muted-text); font-size: 0.88rem; }
   .first-run-field { display: grid; gap: 0.45rem; margin: 1rem 0; font-size: 0.88rem; }
+  .first-run-field input[type="text"],
   .first-run-field input[type="file"],
   .first-run-field select { width: 100%; min-width: 0; }
-  .first-run-check { display: flex; align-items: center; gap: 0.55rem; }
-  .first-run-actions { display: flex; justify-content: space-between; gap: 0.75rem; margin-top: 1.5rem; }
+  .first-run-optional { margin-left: 0.3rem; color: var(--muted-text); font-size: 0.72rem; font-weight: 400; }
+  .first-run-check { display: flex; align-items: center; gap: 0.55rem; margin: 1rem 0; font-size: 0.88rem; }
+  .first-run-actions, .first-run-step-actions { display: flex; align-items: center; justify-content: space-between; gap: 0.6rem; margin-top: 1.5rem; }
+  .first-run-step-actions { margin: 0; }
 
   @media (max-width: 760px) {
     header {
@@ -5262,40 +5305,94 @@ exported (2).html
       backdrop.className = 'first-run-backdrop';
       backdrop.innerHTML =
         '<section class="first-run-panel" role="dialog" aria-modal="true" aria-labelledby="first-run-title">' +
-          '<h2 id="first-run-title">Make Loom yours</h2>' +
-          '<p class="first-run-intro">A couple of quick choices — you can always tweak them later in Settings.</p>' +
-          '<label class="first-run-field">Choose an accent' +
-            '<select id="first-run-accent">' +
-              '<option value="default">Monochrome</option>' +
-              '<option value="neon-green">Neon green</option>' +
-              '<option value="cyan-blue">Cyan blue</option>' +
-              '<option value="coral-pink">Coral pink</option>' +
-              '<option value="purple-glow">Purple</option>' +
-            '</select>' +
-          '</label>' +
-          '<div class="first-run-field">' +
-            '<label class="first-run-check"><input id="first-run-background-enabled" type="checkbox"> Use an image background</label>' +
-            '<input id="first-run-background-file" type="file" accept="image/*" aria-label="Choose a background image" disabled>' +
+          '<div class="first-run-progress"><span id="first-run-step-label">Step 1 of 3</span><span class="first-run-progress-track"><span id="first-run-progress-fill"></span></span></div>' +
+          '<div class="first-run-step" data-step="0">' +
+            '<h2 id="first-run-title">Welcome to Loom</h2>' +
+            '<p class="first-run-intro">What should we call you? Your name stays in this browser and you can change it later.</p>' +
+            '<label class="first-run-field">Your name <span class="first-run-optional">Optional</span><input id="first-run-name" type="text" maxlength="32" autocomplete="nickname" placeholder="Your name"></label>' +
+          '</div>' +
+          '<div class="first-run-step" data-step="1" hidden>' +
+            '<h2>Choose your look</h2>' +
+            '<p class="first-run-intro">Pick a theme and accent to make Loom feel like yours.</p>' +
+            '<label class="first-run-field">Theme<select id="first-run-theme"></select></label>' +
+            '<label class="first-run-field">Accent<select id="first-run-accent"></select></label>' +
+          '</div>' +
+          '<div class="first-run-step" data-step="2" hidden>' +
+            '<h2>Make yourself comfortable</h2>' +
+            '<p class="first-run-intro">A few optional choices. You can always adjust them in Settings.</p>' +
+            '<label class="first-run-field">Text size<select id="first-run-font-scale"><option value="0.9rem">Compact</option><option value="1rem">Default</option><option value="1.1rem">Large</option><option value="1.2rem">Extra large</option></select></label>' +
+            '<label class="first-run-check"><input id="first-run-reduce-motion" type="checkbox"> Reduce motion</label>' +
+            '<div class="first-run-field">' +
+              '<label class="first-run-check"><input id="first-run-background-enabled" type="checkbox"> Add a background image</label>' +
+              '<input id="first-run-background-file" type="file" accept="image/*" aria-label="Choose a background image" disabled>' +
+            '</div>' +
           '</div>' +
           '<div class="first-run-actions">' +
-            '<button class="btn btn-secondary" id="first-run-skip" type="button">Skip setup</button>' +
-            '<button class="btn" id="first-run-save" type="button">Save choices</button>' +
+            '<div class="first-run-step-actions"><button class="btn btn-secondary" id="first-run-back" type="button" hidden>Back</button><button class="btn" id="first-run-next" type="button">Next</button><button class="btn" id="first-run-save" type="button" hidden>Finish setup</button></div>' +
           '</div>' +
         '</section>';
       document.body.appendChild(backdrop);
 
+      const nameInput = document.getElementById('first-run-name');
+      const themeSelect = document.getElementById('first-run-theme');
+      const accentSelect = document.getElementById('first-run-accent');
+      const fontScaleSelect = document.getElementById('first-run-font-scale');
       const backgroundEnabled = document.getElementById('first-run-background-enabled');
       const backgroundFile = document.getElementById('first-run-background-file');
+      const steps = Array.from(backdrop.querySelectorAll('.first-run-step'));
+      const backButton = document.getElementById('first-run-back');
+      const nextButton = document.getElementById('first-run-next');
+      const finishButton = document.getElementById('first-run-save');
+      let currentStep = 0;
+
+      themeSelect.replaceChildren(...Array.from(document.getElementById('theme-select').options).map(option => option.cloneNode(true)));
+      accentSelect.replaceChildren(...Array.from(document.getElementById('accent-select').options).map(option => option.cloneNode(true)));
+      themeSelect.value = document.getElementById('theme-select').value;
+      accentSelect.value = document.getElementById('accent-select').value;
+      fontScaleSelect.value = document.getElementById('font-scale-select').value;
+      document.getElementById('first-run-reduce-motion').checked =
+        document.documentElement.getAttribute('data-reduce-motion') === 'true';
+      nameInput.value = localStorage.getItem('loom_display_name') || '';
       backgroundEnabled.addEventListener('change', () => { backgroundFile.disabled = !backgroundEnabled.checked; });
+
+      function showStep(index) {
+        currentStep = index;
+        steps.forEach((step, stepIndex) => { step.hidden = stepIndex !== index; });
+        document.getElementById('first-run-step-label').textContent = 'Step ' + (index + 1) + ' of ' + steps.length;
+        document.getElementById('first-run-progress-fill').style.width = ((index + 1) / steps.length * 100) + '%';
+        backButton.hidden = index === 0;
+        nextButton.hidden = index === steps.length - 1;
+        finishButton.hidden = index !== steps.length - 1;
+        (steps[index].querySelector('input, select') || steps[index].querySelector('h2')).focus?.();
+      }
 
       function finishSetup(applyChoices) {
         if (applyChoices) {
-          const accent = document.getElementById('first-run-accent').value;
-          const accentSelect = document.getElementById('accent-select');
-          accentSelect.value = accent;
+          const name = nameInput.value.trim().slice(0, 32);
+          if (name) localStorage.setItem('loom_display_name', name);
+          else localStorage.removeItem('loom_display_name');
+
+          const theme = themeSelect.value;
+          document.getElementById('theme-select').value = theme;
+          document.documentElement.setAttribute('data-theme', theme);
+          localStorage.setItem('loom_theme', theme);
+
+          const accent = accentSelect.value;
+          document.getElementById('accent-select').value = accent;
           if (accent === 'default') document.documentElement.removeAttribute('data-accent');
           else document.documentElement.setAttribute('data-accent', accent);
           localStorage.setItem('loom_accent', accent);
+
+          const fontScale = fontScaleSelect.value;
+          document.getElementById('font-scale-select').value = fontScale;
+          document.documentElement.style.setProperty('--font-scale', fontScale);
+          localStorage.setItem('loom_font_scale', fontScale);
+
+          const reduceMotion = document.getElementById('first-run-reduce-motion').checked;
+          document.getElementById('reduce-motion-toggle').checked = reduceMotion;
+          document.documentElement.setAttribute('data-reduce-motion', String(reduceMotion));
+          localStorage.setItem('loom_backup_reduceMotion', String(reduceMotion));
+          schedule3DFrame();
 
           const file = backgroundEnabled.checked && backgroundFile.files[0];
           if (file) {
@@ -5316,11 +5413,15 @@ exported (2).html
         }
         localStorage.setItem('loom_setup_complete', '1');
         backdrop.remove();
+        document.getElementById('display-name-input').value = localStorage.getItem('loom_display_name') || '';
+        if (typeof updateHomeGreeting === 'function') updateHomeGreeting(true);
       }
 
-      document.getElementById('first-run-skip').addEventListener('click', () => finishSetup(false));
-      document.getElementById('first-run-save').addEventListener('click', () => finishSetup(true));
+      backButton.addEventListener('click', () => showStep(Math.max(0, currentStep - 1)));
+      nextButton.addEventListener('click', () => showStep(Math.min(steps.length - 1, currentStep + 1)));
+      finishButton.addEventListener('click', () => finishSetup(true));
       backgroundFile.disabled = true;
+      showStep(0);
     }
 
     if (document.readyState === 'loading') {
@@ -9680,6 +9781,33 @@ exported (2).html
       #loon .loon-shell { height:100%; min-height:0; }
     }
 
+    /* Luna fills the viewport; use the X to return instead of covering the player with the dock. */
+    html.loom-luna-open, html.loom-luna-open body { width:100%; height:100%; overflow:hidden; }
+    html.loom-luna-open header { display:none !important; }
+    html.loom-luna-open main { width:100%; max-width:none; height:100dvh; margin:0; padding:0; }
+    #music:not(.active) { display:none !important; }
+    #music.page-content.active {
+      position:fixed; z-index:80; inset:0; display:block; width:100vw;
+      height:100dvh; margin:0; padding:0; overflow:hidden; background:#111310;
+    }
+    #music .music-app { height:100%; min-height:0; border:0; border-radius:0; }
+    #music .music-content { padding-bottom:9rem; }
+    .luna-home-exit {
+      position:fixed; z-index:100; top:14px; right:14px; display:grid;
+      width:44px; height:44px; place-items:center; border:1px solid rgba(255,255,255,.14);
+      border-radius:50%; background:rgba(17,19,16,.92); color:#f4f5ef; cursor:pointer;
+      font:300 28px/1 var(--font-family); box-shadow:0 8px 24px rgba(0,0,0,.28);
+    }
+    .luna-home-exit[hidden] { display:none; }
+    .luna-home-exit:hover { border-color:rgba(255,255,255,.35); background:#242820; }
+    @media(max-width:760px) {
+      html.loom-luna-open main { height:100dvh; }
+      #music.page-content.active { inset:0; }
+      #music .music-app { grid-template-columns:minmax(0,1fr); }
+      #music .music-content { padding-bottom:8rem; }
+      .luna-home-exit { top:10px; right:10px; width:40px; height:40px; font-size:26px; }
+    }
+
     /* ChatGPT-inspired conversation layout */
     #loon.page-content.active { background: #212121; color: #ececec; }
     #loon .loon-shell { grid-template-columns: 260px minmax(0, 1fr); background: #212121; color: #ececec; }
@@ -10290,6 +10418,12 @@ exported (2).html
   }
   .loon-profile-close { display: grid; place-items: center; border-radius: 50%; }
   .loon-profile-fields { gap: 0; padding: 1rem 1.25rem; }
+  .loon-profile-cropper { display:grid; justify-items:center; gap:.6rem; margin-top:.7rem; }
+  .loon-profile-cropper[hidden] { display:none; }
+  .loon-profile-cropper canvas { width:min(100%, 220px); aspect-ratio:1; border:1px solid var(--border-color); border-radius:50%; background:#111; cursor:grab; touch-action:none; }
+  .loon-profile-cropper canvas:active { cursor:grabbing; }
+  .loon-profile-cropper label { display:grid; width:min(100%, 260px); gap:.35rem; color:var(--muted-text); font-size:.7rem; }
+  .loon-profile-cropper input[type="range"] { width:100%; accent-color:var(--accent-color); }
   .loon-profile-section {
     gap: .85rem; padding: 1rem; border: 0; border-bottom: 1px solid var(--border-color);
     border-radius: 0; background: transparent;
@@ -10413,7 +10547,7 @@ exported (2).html
       '<div class="loon-profile-heading"><div><span class="loon-profile-eyebrow">LOCAL PROFILE</span><h2 id="loon-profile-title">Personalize Loon</h2><p>Your settings stay in this browser.</p></div><button class="loon-profile-close" id="loon-profile-close" type="button" aria-label="Close profile settings">×</button></div>' +
       '<div class="loon-profile-fields">' +
       '<section class="loon-profile-section"><h3>Identity</h3><label class="loon-profile-field">Display name<input id="loon-profile-name" type="text" maxlength="32" placeholder="Guest"></label>' +
-      '<div class="loon-profile-field"><span>Profile picture</span><input id="loon-profile-photo" type="file" accept="image/*" hidden><label class="loon-custom-upload" for="loon-profile-photo"><span aria-hidden="true">＋</span><span>Choose profile picture</span></label><span class="loon-upload-name" id="loon-profile-photo-name">No local image selected</span></div></section>' +
+      '<div class="loon-profile-field"><span>Profile picture</span><input id="loon-profile-photo" type="file" accept="image/*" hidden><label class="loon-custom-upload" for="loon-profile-photo"><span aria-hidden="true">＋</span><span>Choose profile picture</span></label><span class="loon-upload-name" id="loon-profile-photo-name">No local image selected</span><div class="loon-profile-cropper" id="loon-profile-cropper" hidden><canvas id="loon-profile-crop-canvas" width="360" height="360" aria-label="Profile picture crop preview. Drag the image to reposition it."></canvas><label>Zoom<input id="loon-profile-crop-zoom" type="range" min="1" max="3" step="0.01" value="1"></label><span class="custom-upload-name">Drag the image to reposition, then save.</span></div></div></section>' +
       '<section class="loon-profile-section"><h3>Message colors</h3><div class="loon-profile-colors">' +
       '<label class="loon-profile-field">Your messages<input id="loon-profile-user-color" type="color"></label>' +
       '<label class="loon-profile-field">Loon replies<input id="loon-profile-ai-color" type="color"></label></div></section>' +
@@ -10422,7 +10556,77 @@ exported (2).html
 
     const id = name => document.getElementById(name);
     const fileInput = id('loon-profile-photo');
+    const cropper = id('loon-profile-cropper');
+    const cropCanvas = id('loon-profile-crop-canvas');
+    const cropContext = cropCanvas.getContext('2d');
+    const zoomInput = id('loon-profile-crop-zoom');
+    let cropImage = null;
+    let cropZoom = 1;
+    let cropOffsetX = 0;
+    let cropOffsetY = 0;
+    let cropPointer = null;
     const color = name => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+
+    function drawProfileCrop() {
+      if (!cropImage) return;
+      const size = cropCanvas.width;
+      const scale = Math.max(size / cropImage.naturalWidth, size / cropImage.naturalHeight) * cropZoom;
+      const width = cropImage.naturalWidth * scale;
+      const height = cropImage.naturalHeight * scale;
+      cropOffsetX = Math.max(-(width - size) / 2, Math.min(cropOffsetX, (width - size) / 2));
+      cropOffsetY = Math.max(-(height - size) / 2, Math.min(cropOffsetY, (height - size) / 2));
+      cropContext.clearRect(0, 0, size, size);
+      cropContext.drawImage(cropImage, (size - width) / 2 + cropOffsetX, (size - height) / 2 + cropOffsetY, width, height);
+    }
+
+    function loadProfileCrop(file) {
+      cropImage = null;
+      cropper.hidden = true;
+      if (!file.type.startsWith('image/') || file.size > 1024 * 1024) {
+        toast('Choose an image smaller than 1 MB.');
+        fileInput.value = '';
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        const image = new Image();
+        image.onload = () => {
+          cropImage = image;
+          cropZoom = 1;
+          cropOffsetX = 0;
+          cropOffsetY = 0;
+          zoomInput.value = '1';
+          cropper.hidden = false;
+          id('loon-profile-photo-name').textContent = file.name + ' — adjust crop';
+          drawProfileCrop();
+        };
+        image.onerror = () => toast('Could not open that profile picture.');
+        image.src = String(reader.result || '');
+      };
+      reader.onerror = () => toast('Could not read that profile picture.');
+      reader.readAsDataURL(file);
+    }
+
+    zoomInput.addEventListener('input', () => {
+      cropZoom = Number(zoomInput.value);
+      drawProfileCrop();
+    });
+    cropCanvas.addEventListener('pointerdown', event => {
+      if (!cropImage) return;
+      cropPointer = { x: event.clientX, y: event.clientY };
+      cropCanvas.setPointerCapture(event.pointerId);
+    });
+    cropCanvas.addEventListener('pointermove', event => {
+      if (!cropPointer) return;
+      const scaleX = cropCanvas.width / cropCanvas.getBoundingClientRect().width;
+      const scaleY = cropCanvas.height / cropCanvas.getBoundingClientRect().height;
+      cropOffsetX += (event.clientX - cropPointer.x) * scaleX;
+      cropOffsetY += (event.clientY - cropPointer.y) * scaleY;
+      cropPointer = { x: event.clientX, y: event.clientY };
+      drawProfileCrop();
+    });
+    cropCanvas.addEventListener('pointerup', () => { cropPointer = null; });
+    cropCanvas.addEventListener('pointercancel', () => { cropPointer = null; });
     function addUserAvatar(row) {
       if (row.querySelector('.loon-user-avatar')) return;
       const avatar = document.createElement('span');
@@ -10448,7 +10652,9 @@ exported (2).html
       id('loon-profile-user-color').value = profile.userBubble || color('--accent-color') || '#b8f5cf';
       id('loon-profile-ai-color').value = profile.aiBubble || color('--accent-color') || '#b8f5cf';
       fileInput.value = '';
-      backgroundInput.value = '';
+      cropImage = null;
+      cropPointer = null;
+      cropper.hidden = true;
       id('loon-profile-photo-name').textContent = profile.photo ? 'Saved profile picture' : 'No local image selected';
       dialog.hidden = false;
       id('loon-profile-name').focus();
@@ -10475,23 +10681,15 @@ exported (2).html
     document.addEventListener('keydown', event => { if (event.key === 'Escape' && !dialog.hidden) closeDialog(); });
     fileInput.addEventListener('change', () => {
       const file = fileInput.files && fileInput.files[0];
-      if (!file) return;
-      if (!file.type.startsWith('image/') || file.size > 1024 * 1024) { toast('Choose an image smaller than 1 MB.'); fileInput.value = ''; return; }
-      const name = id('loon-profile-photo-name');
-      if (name) name.textContent = file.name;
-      const reader = new FileReader();
-      reader.onload = () => { profile.photo = String(reader.result || ''); };
-      reader.onerror = () => toast('Could not read that profile picture.');
-      reader.readAsDataURL(file);
+      if (file) loadProfileCrop(file);
     });
     id('loon-profile-save').addEventListener('click', () => {
-      const file = fileInput.files && fileInput.files[0];
-      if (!file) { saveProfile(); return; }
-      if (!file.type.startsWith('image/') || file.size > 1024 * 1024) { toast('Choose an image smaller than 1 MB.'); return; }
-      const reader = new FileReader();
-      reader.onload = () => saveProfile(String(reader.result || ''));
-      reader.onerror = () => toast('Could not read that profile picture.');
-      reader.readAsDataURL(file);
+      if (fileInput.files && fileInput.files[0]) {
+        if (!cropImage) { toast('Wait for the picture crop preview to load.'); return; }
+        saveProfile(cropCanvas.toDataURL('image/jpeg', 0.88));
+        return;
+      }
+      saveProfile();
     });
     id('loon-profile-theme').addEventListener('click', () => {
       profile.userBubble = ''; profile.aiBubble = ''; delete profile.uiColor;
@@ -10509,6 +10707,47 @@ exported (2).html
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initLoonProfile, { once: true });
   else initLoonProfile();
-})();
+  })();
+</script>
+<script>
+  (() => {
+    const greeting = document.getElementById('home-title');
+    const nameInput = document.getElementById('display-name-input');
+    if (!greeting) return;
+    let activeGreetingPeriod = '';
+
+    function updateHomeGreeting(force = false) {
+      const hour = new Date().getHours();
+      const period = hour >= 5 && hour < 12 ? 'morning' :
+        hour >= 12 && hour < 17 ? 'afternoon' :
+        hour >= 17 && hour < 22 ? 'evening' : 'late';
+      if (!force && period === activeGreetingPeriod) return;
+      activeGreetingPeriod = period;
+      const name = (localStorage.getItem('loom_display_name') || '').trim();
+      const suffix = name ? ', ' + name : '';
+      const messages = {
+        morning: ['Good morning' + suffix + '.', 'A fresh day, ' + (name || 'friend') + '?', 'Morning games' + suffix + '?'],
+        afternoon: ['Good afternoon' + suffix + '.', 'Afternoon ~looming~' + suffix + '?', 'A little play break' + suffix + '?'],
+        evening: ['Good evening' + suffix + '.', 'Evening games' + suffix + '?', 'Ready to unwind' + suffix + '?'],
+        late: ['Late-night games' + suffix + '?', 'Still up' + suffix + '?', 'The night is yours' + suffix + '.']
+      };
+      const greetingText = messages[period][Math.floor(Math.random() * messages[period].length)];
+      greeting.textContent = greetingText;
+      if (nameInput && document.activeElement !== nameInput) nameInput.value = name;
+    }
+
+    window.updateHomeGreeting = updateHomeGreeting;
+    if (nameInput) {
+      nameInput.value = localStorage.getItem('loom_display_name') || '';
+      nameInput.addEventListener('input', () => {
+        const name = nameInput.value.trim().slice(0, 32);
+        if (name) localStorage.setItem('loom_display_name', name);
+        else localStorage.removeItem('loom_display_name');
+        updateHomeGreeting(true);
+      });
+    }
+    updateHomeGreeting(true);
+    setInterval(() => updateHomeGreeting(), 60_000);
+  })();
 </script>
 </html>
